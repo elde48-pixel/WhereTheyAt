@@ -495,7 +495,7 @@
   <script>
     /**
      * GAME CONFIGURATION & COORDINATES
-     * Coordinates (x, y) are percentages (0 to 100) from top-left of each image.
+     * Matched to your exact filenames (note: l1_... uses lowercase L, I2_... and I3_... use uppercase I).
      */
     const LEVELS = [
       {
@@ -504,9 +504,9 @@
         title: "Lost Linda",
         image: "Lost Linda.jpg",
         targets: [
-          { id: "l1_1", name: "Object 1", icon: "l1_obj1.jpg", x: 8.2, y: 95.5, radius: 5.5 },
-          { id: "l1_2", name: "Lost Linda", icon: "l1_obj2.jpg", x: 34.0, y: 64.5, radius: 6.0 },
-          { id: "l1_3", name: "Object 3", icon: "l1_obj3.jpg", x: 80.8, y: 49.5, radius: 5.5 }
+          { id: "l1_1", name: "Lost Linda", icon: "l1_obj1.jpg", x: 34.0, y: 64.5, radius: 6.0 },
+          { id: "l1_2", name: "Golden Staff", icon: "l1_obj2.jpg", x: 80.8, y: 49.5, radius: 5.5 },
+          { id: "l1_3", name: "Gold Shield", icon: "l1_obj3.jpg", x: 8.2, y: 95.5, radius: 5.5 }
         ]
       },
       {
@@ -515,9 +515,9 @@
         title: "Irish I Could Find Her",
         image: "Irish I Could Find Her.jpg",
         targets: [
-          { id: "l2_1", name: "Object 1", icon: "l2_obj1.jpg", x: 37.5, y: 43.0, radius: 5.5 },
-          { id: "l2_2", name: "Object 2", icon: "l2_obj2.jpg", x: 29.5, y: 71.5, radius: 5.5 },
-          { id: "l2_3", name: "Object 3", icon: "l2_obj3.jpg", x: 53.0, y: 96.5, radius: 6.0 }
+          { id: "l2_1", name: "Irish Lass", icon: "I2_obj1.jpg", x: 29.5, y: 71.5, radius: 5.5 },
+          { id: "l2_2", name: "Pint of Stout", icon: "I2_obj2.jpg", x: 37.5, y: 43.0, radius: 5.5 },
+          { id: "l2_3", name: "Irish Dog", icon: "I2_obj3.jpg", x: 53.0, y: 96.5, radius: 6.0 }
         ]
       },
       {
@@ -526,9 +526,9 @@
         title: "Can Bearly see him",
         image: "Can Bearly see him.jpg",
         targets: [
-          { id: "l3_1", name: "Object 1", icon: "l3_obj1.jpg", x: 7.5, y: 98.0, radius: 5.5 },
-          { id: "l3_2", name: "Object 2", icon: "l3_obj2.jpg", x: 47.5, y: 43.0, radius: 5.5 },
-          { id: "l3_3", name: "Object 3", icon: "l3_obj3.jpg", x: 83.5, y: 35.0, radius: 5.5 }
+          { id: "l3_1", name: "Sunbathing Bear", icon: "I3_obj1.jpg", x: 47.5, y: 43.0, radius: 5.5 },
+          { id: "l3_2", name: "Bear Food", icon: "I3_obj2.jpg", x: 83.5, y: 35.0, radius: 5.5 },
+          { id: "l3_3", name: "Bear Cap", icon: "I3_obj3.jpg", x: 7.5, y: 98.0, radius: 5.5 }
         ]
       }
     ];
@@ -573,222 +573,4 @@
       LEVELS.forEach((level, idx) => {
         const best = savedTimes[level.id];
         const card = document.createElement("div");
-        card.className = `level-card ${best !== undefined ? "completed" : ""}`;
-        card.onclick = () => openBriefing(idx);
-
-        card.innerHTML = `
-          <div class="level-thumb-wrap">
-            <img src="${level.image}" alt="${level.title}" />
-            <span class="level-badge">Level ${level.number}</span>
-            ${best !== undefined ? `<span class="best-time-badge">Best: ${formatTime(best)}</span>` : ""}
-          </div>
-          <div class="level-info">
-            <h2>${level.title}</h2>
-            <span class="play-pill">${best !== undefined ? "Replay" : "Play"}</span>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    function createTargetImageHTML(target, index) {
-      return `<img src="${target.icon}" alt="${target.name}" onerror="this.style.display='none'; this.parentElement.textContent='#${index + 1}';" />`;
-    }
-
-    function openBriefing(index) {
-      currentLevelIndex = index;
-      const level = LEVELS[index];
-      document.getElementById("briefing-title").textContent = `Level ${level.number}: ${level.title}`;
-
-      const list = document.getElementById("briefing-targets");
-      list.innerHTML = level.targets
-        .map(
-          (t, i) => `
-          <div class="target-preview-item">
-            <div class="target-img-box">
-              ${createTargetImageHTML(t, i)}
-            </div>
-            <span>${t.name}</span>
-          </div>
-        `
-        )
-        .join("");
-
-      document.getElementById("briefing-modal").classList.add("active");
-    }
-
-    function closeBriefing() {
-      document.getElementById("briefing-modal").classList.remove("active");
-    }
-
-    function startLevelGameplay() {
-      closeBriefing();
-      const level = LEVELS[currentLevelIndex];
-      foundTargets.clear();
-
-      document.getElementById("home-screen").classList.remove("active");
-      document.getElementById("game-screen").classList.add("active");
-
-      const img = document.getElementById("game-image");
-      img.src = level.image;
-      document.getElementById("markers-layer").innerHTML = "";
-
-      const hud = document.getElementById("hud-targets");
-      hud.innerHTML = level.targets
-        .map(
-          (t, i) => `
-          <div id="hud-${t.id}" class="hud-target">
-            ${createTargetImageHTML(t, i)}
-          </div>
-        `
-        )
-        .join("");
-
-      currentZoom = 1.6;
-      applyZoom();
-
-      const viewport = document.getElementById("viewport");
-      setTimeout(() => {
-        viewport.scrollLeft = (viewport.scrollWidth - viewport.clientWidth) / 2;
-        viewport.scrollTop = (viewport.scrollHeight - viewport.clientHeight) / 2;
-      }, 50);
-
-      clearInterval(timerInterval);
-      startTime = Date.now();
-      elapsedSeconds = 0;
-      document.getElementById("timer-display").textContent = "00:00";
-      timerInterval = setInterval(() => {
-        elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
-        document.getElementById("timer-display").textContent = formatTime(elapsedSeconds);
-      }, 1000);
-    }
-
-    function applyZoom() {
-      const container = document.getElementById("canvas-container");
-      container.style.width = `${currentZoom * 100}%`;
-      document.getElementById("zoom-label").textContent = `${currentZoom.toFixed(1)}x`;
-    }
-
-    function changeZoom(delta) {
-      const viewport = document.getElementById("viewport");
-      const prevZoom = currentZoom;
-      currentZoom = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, +(currentZoom + delta).toFixed(2)));
-      if (currentZoom === prevZoom) return;
-
-      const centerX = (viewport.scrollLeft + viewport.clientWidth / 2) / prevZoom;
-      const centerY = (viewport.scrollTop + viewport.clientHeight / 2) / prevZoom;
-
-      applyZoom();
-
-      viewport.scrollLeft = centerX * currentZoom - viewport.clientWidth / 2;
-      viewport.scrollTop = centerY * currentZoom - viewport.clientHeight / 2;
-    }
-
-    function resetZoom() {
-      currentZoom = 1.0;
-      applyZoom();
-    }
-
-    const gameImg = document.getElementById("game-image");
-    let pointerStart = { x: 0, y: 0 };
-
-    gameImg.addEventListener("pointerdown", (e) => {
-      pointerStart = { x: e.clientX, y: e.clientY };
-    });
-
-    gameImg.addEventListener("pointerup", (e) => {
-      const moveDist = Math.hypot(e.clientX - pointerStart.x, e.clientY - pointerStart.y);
-      if (moveDist > 10) return;
-
-      const rect = gameImg.getBoundingClientRect();
-      const clickXPercent = ((e.clientX - rect.left) / rect.width) * 100;
-      const clickYPercent = ((e.clientY - rect.top) / rect.height) * 100;
-
-      checkHit(clickXPercent, clickYPercent);
-    });
-
-    function checkHit(xPct, yPct) {
-      const level = LEVELS[currentLevelIndex];
-      const markersLayer = document.getElementById("markers-layer");
-      let hitFound = false;
-
-      const aspectRatio = gameImg.clientWidth / gameImg.clientHeight || 1.5;
-
-      for (const target of level.targets) {
-        if (foundTargets.has(target.id)) continue;
-
-        const dx = (xPct - target.x) * aspectRatio;
-        const dy = yPct - target.y;
-        const distance = Math.hypot(dx, dy);
-
-        if (distance <= target.radius * aspectRatio) {
-          hitFound = true;
-          foundTargets.add(target.id);
-
-          const circle = document.createElement("div");
-          circle.className = "found-circle";
-          circle.style.left = `${target.x}%`;
-          circle.style.top = `${target.y}%`;
-          markersLayer.appendChild(circle);
-
-          document.getElementById(`hud-${target.id}`).classList.add("found");
-
-          if (foundTargets.size === level.targets.length) {
-            handleLevelComplete();
-          }
-          break;
-        }
-      }
-
-      if (!hitFound) {
-        const miss = document.createElement("div");
-        miss.className = "miss-marker";
-        miss.style.left = `${xPct}%`;
-        miss.style.top = `${yPct}%`;
-        markersLayer.appendChild(miss);
-        setTimeout(() => miss.remove(), 450);
-      }
-    }
-
-    function handleLevelComplete() {
-      clearInterval(timerInterval);
-      const level = LEVELS[currentLevelIndex];
-      const bestSeconds = saveBestTime(level.id, elapsedSeconds);
-
-      document.getElementById("victory-level-name").textContent = `Level ${level.number}: ${level.title}`;
-      document.getElementById("final-time").textContent = formatTime(elapsedSeconds);
-      document.getElementById("best-time-label").textContent = `Best Record: ${formatTime(bestSeconds)}`;
-
-      const nextBtn = document.getElementById("next-level-btn");
-      if (currentLevelIndex < LEVELS.length - 1) {
-        nextBtn.style.display = "block";
-        nextBtn.textContent = `Next: ${LEVELS[currentLevelIndex + 1].title} →`;
-      } else {
-        nextBtn.style.display = "none";
-      }
-
-      setTimeout(() => {
-        document.getElementById("victory-modal").classList.add("active");
-      }, 500);
-    }
-
-    function goToNextLevel() {
-      document.getElementById("victory-modal").classList.remove("active");
-      if (currentLevelIndex < LEVELS.length - 1) {
-        openBriefing(currentLevelIndex + 1);
-      }
-    }
-
-    function exitToMenu() {
-      clearInterval(timerInterval);
-      document.getElementById("victory-modal").classList.remove("active");
-      document.getElementById("briefing-modal").classList.remove("active");
-      document.getElementById("game-screen").classList.remove("active");
-      document.getElementById("home-screen").classList.add("active");
-      renderLevelMenu();
-    }
-
-    renderLevelMenu();
-  </script>
-</body>
-</html>
+        card.className = 
