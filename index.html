@@ -498,40 +498,40 @@
      * Coordinates (x, y) are percentages (0 to 100) from top-left of each image.
      */
     const LEVELS = [
-      {
-        id: 0,
-        number: 1,
-        title: "Lost Linda",
-        image: "Lost Linda.jpg",
-        targets: [
-          { id: "l1_1", name: "Lost Linda", icon: "l1_obj1.jpg", x: 34.0, y: 64.5, radius: 6.0 },
-          { id: "l1_2", name: "Golden Staff", icon: "l1_obj2.jpg", x: 80.8, y: 49.5, radius: 5.5 },
-          { id: "l1_3", name: "Gold Shield", icon: "l1_obj3.jpg", x: 8.2, y: 95.5, radius: 5.5 }
-        ]
-      },
-      {
-        id: 1,
-        number: 2,
-        title: "Irish I Could Find Her",
-        image: "Irish I Could Find Her.jpg",
-        targets: [
-          { id: "l2_1", name: "Irish Lass", icon: "l2_obj1.jpg", x: 29.5, y: 71.5, radius: 5.5 },
-          { id: "l2_2", name: "Pint of Stout", icon: "l2_obj2.jpg", x: 37.5, y: 43.0, radius: 5.5 },
-          { id: "l2_3", name: "Irish Dog", icon: "l2_obj3.jpg", x: 53.0, y: 96.5, radius: 6.0 }
-        ]
-      },
-      {
-        id: 2,
-        number: 3,
-        title: "Can Bearly see him",
-        image: "Can Bearly see him.jpg",
-        targets: [
-          { id: "l3_1", name: "Sunbathing Bear", icon: "l3_obj1.jpg", x: 47.5, y: 43.0, radius: 5.5 },
-          { id: "l3_2", name: "Bear Food", icon: "l3_obj2.jpg", x: 83.5, y: 35.0, radius: 5.5 },
-          { id: "l3_3", name: "Bear Cap", icon: "l3_obj3.jpg", x: 7.5, y: 98.0, radius: 5.5 }
-        ]
-      }
-    ];
+  {
+    id: 0,
+    number: 1,
+    title: "Lost Linda",
+    image: "Lost Linda.jpg",
+    targets: [
+      { id: "l1_1", name: "Lost Linda", icon: "l1_obj1.jpg", x: 34.0, y: 64.5, radius: 6.0 },
+      { id: "l1_2", name: "Golden Staff", icon: "l1_obj2.jpg", x: 80.8, y: 49.5, radius: 5.5 },
+      { id: "l1_3", name: "Gold Shield", icon: "l1_obj3.jpg", x: 8.2, y: 95.5, radius: 5.5 }
+    ]
+  },
+  {
+    id: 1,
+    number: 2,
+    title: "Irish I Could Find Her",
+    image: "Irish I Could Find Her.jpg",
+    targets: [
+      { id: "l2_1", name: "Irish Lass", icon: "l2_obj1.jpg", x: 29.5, y: 71.5, radius: 5.5 },
+      { id: "l2_2", name: "Pint of Stout", icon: "l2_obj2.jpg", x: 37.5, y: 43.0, radius: 5.5 },
+      { id: "l2_3", name: "Irish Dog", icon: "l2_obj3.jpg", x: 53.0, y: 96.5, radius: 6.0 }
+    ]
+  },
+  {
+    id: 2,
+    number: 3,
+    title: "Can Bearly see him",
+    image: "Can Bearly see him.jpg",
+    targets: [
+      { id: "l3_1", name: "Sunbathing Bear", icon: "l3_obj1.jpg", x: 47.5, y: 43.0, radius: 5.5 },
+      { id: "l3_2", name: "Bear Food", icon: "l3_obj2.jpg", x: 83.5, y: 35.0, radius: 5.5 },
+      { id: "l3_3", name: "Bear Cap", icon: "l3_obj3.jpg", x: 7.5, y: 98.0, radius: 5.5 }
+    ]
+  }
+];
     let currentLevelIndex = 0;
     let foundTargets = new Set();
     let timerInterval = null;
